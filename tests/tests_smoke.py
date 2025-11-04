@@ -3,12 +3,12 @@ import sys
 from importlib import import_module
 
 
-def test_package_imports():
+def test_package_imports() -> None:
     mod = import_module("invoicegen")
     assert hasattr(mod, "__version__")
 
 
-def test_cli_help_exits_zero_and_shows_usage():
+def test_cli_help_exits_zero_and_shows_usage() -> None:
     proc = subprocess.run(
         [sys.executable, "-m", "invoicegen", "--help"],
         check=False,
