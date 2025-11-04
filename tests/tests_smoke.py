@@ -11,7 +11,8 @@ def test_package_imports():
 def test_cli_help_exits_zero_and_shows_usage():
     proc = subprocess.run(
         [sys.executable, "-m", "invoicegen", "--help"],
-        check=False, capture_output=True,
+        check=False,
+        capture_output=True,
         text=True,
     )
     assert proc.returncode == 0, proc.stderr
