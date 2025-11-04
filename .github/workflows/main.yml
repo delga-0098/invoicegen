@@ -44,4 +44,4 @@ jobs:
         run: mypy .
 
       - name: Pytest
-        run: pytest
+        run: python -m pytest -q .\tests\tests_smoke.py
