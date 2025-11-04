@@ -1,14 +1,17 @@
 from __future__ import annotations
+
 import argparse
-from importlib.metadata import version, PackageNotFoundError
+from importlib.metadata import PackageNotFoundError, version
 
 PKG = "invoicegen"
+
 
 def get_version() -> str:
     try:
         return version(PKG)
     except PackageNotFoundError:
         return "0.0.1+dev"
+
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
@@ -31,6 +34,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     return parser
 
+
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
@@ -41,6 +45,7 @@ def main(argv: list[str] | None = None) -> int:
 
     print(f"[invoicegen] command={args.command} (skeleton)")
     return 0
+
 
 if __name__ == "__main__":
     raise SystemExit(main())
