@@ -1,0 +1,67 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "invoicegen"
+version = "0.0.1"
+description = "Generate invoices from job data"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Jesus Antonio Delgado-Perez" }]
+license = { text = "MIT" }
+
+# Runtime dependencies
+dependencies = [
+    "pandas>=2.2",
+    "pydantic>=2.6",
+    "jinja2>=3.1",
+    "weasyprint>=62.3; platform_system != 'Windows'",
+]
+
+# Invoicegen command creation
+[project.scripts]
+invoicegen = "invoicegen.cli:main"
+
+# Where the code lives
+[tool.hatch.build.targets.wheel]
+packages = ["src/invoicegen"]
+
+# Code style
+[tool.black]
+line-length = 100
+target-version = ["py311","py312"]
+
+# Linting
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+fix = false
+select = ["E","F","I","UP","B","SIM","PL"]
+ignore = ["E501"]
+
+# Static typing
+[tool.mypy]
+python_version = "3.11"
+warn_unused_configs = true
+warn_return_any = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+no_implicit_optional = true
+strict_equality = true
+ignore_missing_imports = true
+
+# Pytest defaults
+[tool.pytest.ini_options]
+addopts = "-q --maxfail=1"
+pythonpath = ["src"]
+
+[project.optional-dependencies]
+dev = [
+  "black",
+  "ruff",
+  "mypy",
+  "pytest",
+]
