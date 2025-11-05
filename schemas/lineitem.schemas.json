@@ -1,0 +1,7 @@
+{
+    "%schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "InvoiceGen JobLine (Normalized)",
+    "type": "object",
+    "required": ["address", "unit", "date", "description", "qty", "rate", "line_total", "source_row"],
+    
+}
