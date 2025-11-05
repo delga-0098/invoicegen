@@ -2,7 +2,7 @@
     "%schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "InvoiceGen JobLine (Normalized)",
     "type": "object",
-    "required": ["address", "unit", "date", "description", "qty", "rate", "line_total", "source_row"],
+    "required": ["address", "unit", "date", "description", "qty", "rate", "line_total", "paid", "source_row"],
     "properties": {
         "address": { "type": "string", "minLength": 1},
         "unit": { "type": "string", "minLength": 1},
@@ -11,6 +11,7 @@
         "qty": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$"},
         "rate": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$"},
         "line_total": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$"},
+        "paid": { "type": "boolean", "description": "TRUE if job has already been paid and should be excluded from invoice."},
         "source_row": { "type": "integer", "minimum": 2}
     },
     "additionalProperties": false,
@@ -23,6 +24,7 @@
             "qty": "1",
             "rate": "100",
             "line_total": "100",
+            "paid": "FALSE",
             "source_row": 2
         }
     ]
