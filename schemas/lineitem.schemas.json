@@ -3,5 +3,14 @@
     "title": "InvoiceGen JobLine (Normalized)",
     "type": "object",
     "required": ["address", "unit", "date", "description", "qty", "rate", "line_total", "source_row"],
-    
+    "properties": {
+        "address": { "type": "string", "minLength": 1},
+        "unit": { "type": "string", "minLength": 1},
+        "date": { "type": "string", "format": "date"},
+        "description": { "type": "string", "minLength": 1, "maxlength": 2000},
+        "qty": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$"},
+        "rate": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$"},
+        "line_total": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$"},
+        "source_row": { "type": "integer", "minimum": 2}
+    }
 }
