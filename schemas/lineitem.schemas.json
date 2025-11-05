@@ -12,5 +12,18 @@
         "rate": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$"},
         "line_total": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$"},
         "source_row": { "type": "integer", "minimum": 2}
-    }
+    },
+    "additionalProperties": false,
+    "examples": [
+        {
+            "address": "Elderwood",
+            "unit": "A",
+            "date": "2024-11-01",
+            "description": "Repair leaking toilet.",
+            "qty": "1",
+            "rate": "100",
+            "line_total": "100",
+            "source_row": 2
+        }
+    ]
 }
