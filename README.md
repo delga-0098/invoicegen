@@ -11,7 +11,7 @@ This defines the structure and validation rules for the job line CSV files used 
 |--------------|----------|--------------|
 | **Date** | `10/02/2025` | Date work was done (MM/DD/YYYY). Must be a valid calendar date. |
 | **Address** | `123 Elm St` | The property where the job was performed. |
-| **Unit** | `A` | The unit in chich the work was performed. |
+| **Unit** | `A` | The unit in which the work was performed. |
 | **Description** | `Fix leaking sink (P-trap)` | Description of work performed. Category can be embedded in this text if desired. |
 | **Quantity** | `1.5` | Amount of work done (hours, units, etc.). Must be a non-negative number. |
 | **Unit Price** | `65` | Rate per unit. Must be a non-negative number. |
@@ -28,7 +28,7 @@ This defines the structure and validation rules for the job line CSV files used 
 - **Description:** Cannot be empty and must be less than 2000 characters.  
 - **Quantity / Unit Price:**  
   - Must be valid decimal numbers (`1.5`, `45`, `0.25`).  
-  - No `$`, commas, or text allowed.  
+  - `$`, commas, or text allowed.  
   - Must be ≥ 0.  
 - **Total:** Ignored for math. If it differs from the computed total, a warning is reported.  
 - **Paid:** Must be a bool operation.

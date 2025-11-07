@@ -2,11 +2,11 @@
     "%schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "InvoiceGen JobLine (Normalized)",
     "type": "object",
-    "required": ["address", "unit", "date", "description", "qty", "rate", "line_total", "paid", "source_row"],
+    "required": ["address", "unit", "dates", "description", "qty", "rate", "line_total", "paid", "source_row"],
     "properties": {
         "address": { "type": "string", "minLength": 1},
         "unit": { "type": "string", "minLength": 1},
-        "date": { "type": "string", "format": "date"},
+        "dates": { "type": "string", "format": "date"},
         "description": { "type": "string", "minLength": 1, "maxlength": 2000},
         "qty": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$"},
         "rate": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$"},
@@ -19,7 +19,7 @@
         {
             "address": "Elderwood",
             "unit": "A",
-            "date": "2024-11-01",
+            "dates": "2024-11-01",
             "description": "Repair leaking toilet.",
             "qty": "1",
             "rate": "100",
