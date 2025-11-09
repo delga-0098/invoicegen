@@ -106,7 +106,7 @@ class Jobline(BaseModel):
     @field_validator("paid", mode="before")
     def validate_paid(cls: Any, value: Any) -> bool:
         if isinstance(value, bool):
-            pre_bool = f"{value}"
+            value = f"{value}"
 
         if isinstance(value, str):
             pre_bool = value.strip().lower()
