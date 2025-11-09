@@ -55,13 +55,13 @@ ignore_missing_imports = true
 
 # Pytest defaults
 [tool.pytest.ini_options]
-addopts = "-q --maxfail=1"
-pythonpath = ["src"]
+addopts = "-q"
+testpaths = ["tests"]
 
 [project.optional-dependencies]
 dev = [
   "black",
   "ruff",
   "mypy",
-  "pytest",
+  "pytest>=8",
 ]

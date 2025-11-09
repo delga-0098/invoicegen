@@ -1,5 +1,4 @@
 import subprocess
-from invoicegen.models import Jobline
 import sys
 from importlib import import_module
 
