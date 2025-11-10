@@ -55,7 +55,7 @@ class Jobline(BaseModel):
         # Make sure it is a string
         if not isinstance(value, str):
             raise ValueError(
-                f"Date must be a string in MM/DD/YYYY format, got {type(value).__name__}"
+                f"Dates must be a string in MM/DD/YYYY format, got {type(value).__name__}"
             )
 
         value = value.strip()
@@ -118,11 +118,11 @@ class Jobline(BaseModel):
             value = f"{value}"
 
         if isinstance(value, str):
-            pre_bool = value.strip().lower()
+            value = value.strip().lower()
 
-        if pre_bool == "true":
+        if value == "true":
             return True
-        elif pre_bool == "false":
+        elif value == "false":
             return False
 
         raise ValueError("Paid must be a string or boolean True or False")
