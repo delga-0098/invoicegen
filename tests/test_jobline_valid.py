@@ -6,6 +6,7 @@ import pytest
 
 from invoicegen.models import Jobline
 
+
 # Create base jobline which will be modified in each case
 @pytest.fixture
 def base_jobline() -> dict:

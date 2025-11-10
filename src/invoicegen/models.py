@@ -21,13 +21,15 @@ class Jobline(BaseModel):
     def ensure_nonempty_str(cls: Any, value: Any, info: ValidationInfo) -> str:
         # Make sure it is a string
         if not isinstance(value, str):
-            raise ValueError(f"{info.field_name.capitalize()} must be a string, got {type(value).__name__}")
+            raise ValueError(
+                f"{str(info.field_name).capitalize()} must be a string, got {type(value).__name__}"
+            )
 
         value = value.strip()
 
         # Check if it is empty
         if len(value) < 1:
-            raise ValueError(f"{info.field_name.capitalize()} is empty, expected a value")
+            raise ValueError(f"{str(info.field_name).capitalize()} is empty, expected a value")
 
         return str(value)
 
@@ -42,7 +44,7 @@ class Jobline(BaseModel):
         # Check if it is empty
         if len(value) < 1:
             raise ValueError("Description is empty, expected a value")
-        
+
         # Check if description is less than 2000 characters long
         max_chars = 2000
         if len(value) > max_chars:
@@ -77,13 +79,13 @@ class Jobline(BaseModel):
         # We do not want any floats for precision
         if isinstance(value, float):
             raise ValueError(
-                f"{info.field_name.capitalize()} must not be a float, please use string, decimal, or int"
+                f"{str(info.field_name).capitalize()} must not be a float, please use string, decimal, or int"
             )
 
         # Make sure input is a string, integer, or decimal
         if not isinstance(value, (str, int, Decimal)):
             raise ValueError(
-                f"{info.field_name.capitalize()} must be a string, int, or decimal, got {type(value).__name__}"
+                f"{str(info.field_name).capitalize()} must be a string, int, or decimal, got {type(value).__name__}"
             )
 
         # If the instance is a string, then prepare it to be converted to Decimal
@@ -94,21 +96,23 @@ class Jobline(BaseModel):
             # If after removing non number characters, the string is empty
             if not len(value):
                 raise ValueError(
-                    f"{info.field_name.capitalize()} is empty after removing symbols; provide a number"
+                    f"{str(info.field_name).capitalize()} is empty after removing symbols; provide a number"
                 )
 
             # Make sure pattern is a decimal number
             if not re.fullmatch(r"^[0-9]+(\.[0-9]+)?$", value):
-                raise ValueError(f"{info.field_name.capitalize()} must be digits.decimals (e.g. 1.5, 65)")
+                raise ValueError(
+                    f"{str(info.field_name).capitalize()} must be digits.decimals (e.g. 1.5, 65)"
+                )
 
         # Since now should only have values that can be converted to Decimals, convert it
         dec = Decimal(value)
 
         # We only allow decimals that are finite and at least 0
         if not dec.is_finite():
-            raise ValueError(f"{info.field_name.capitalize()} must be a finite number")
+            raise ValueError(f"{str(info.field_name).capitalize()} must be a finite number")
         if dec < 0:
-            raise ValueError(f"{info.field_name.capitalize()} must be at least 0: got {dec}")
+            raise ValueError(f"{str(info.field_name).capitalize()} must be at least 0: got {dec}")
 
         return dec
 
