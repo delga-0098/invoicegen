@@ -6,7 +6,7 @@ import pytest
 
 from invoicegen.models import Jobline
 
-
+# Create base jobline which will be modified in each case
 @pytest.fixture
 def base_jobline() -> dict:
     return {
@@ -20,7 +20,7 @@ def base_jobline() -> dict:
     }
 
 
-# Tests the base jobline
+# Tests the base jobline for validity
 def test_jobline_valid_path(base_jobline: dict) -> None:
     j = Jobline(**base_jobline)
 
