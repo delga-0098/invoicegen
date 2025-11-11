@@ -4,7 +4,7 @@ from typing import Any
 
 import pytest
 
-from invoicegen.models import Jobline
+from invoicegen.models_jobline import JobLine
 
 
 # Create base jobline which will be modified in each case
@@ -23,7 +23,7 @@ def base_jobline() -> dict:
 
 # Tests the base jobline for validity
 def test_jobline_valid_path(base_jobline: dict) -> None:
-    j = Jobline(**base_jobline)
+    j = JobLine(**base_jobline)
 
     assert j.address == "Elderwood"
     assert j.unit == "A"
@@ -42,7 +42,7 @@ def test_jobline_valid_path(base_jobline: dict) -> None:
     "raw, expected", [("    X    ", "X"), ("\tY\n", "Y")], ids=["spaces", "tabs"]
 )
 def test_whitespace_trim(field: str, raw: str, expected: str, base_jobline: dict) -> None:
-    j = Jobline(**{**base_jobline, field: raw})
+    j = JobLine(**{**base_jobline, field: raw})
 
     assert getattr(j, field) == expected
 
@@ -53,7 +53,7 @@ def test_whitespace_trim(field: str, raw: str, expected: str, base_jobline: dict
     ids=["dates-spaces", "dates-tabs"],
 )
 def test_dates_trimmed_and_parsed(raw: str, expected: date, base_jobline: dict) -> None:
-    j = Jobline(**{**base_jobline, "dates": raw})
+    j = JobLine(**{**base_jobline, "dates": raw})
 
     assert j.dates == expected
 
@@ -67,7 +67,7 @@ def test_dates_trimmed_and_parsed(raw: str, expected: date, base_jobline: dict) 
 def test_decimals_trimmed_and_parsed(
     field: str, raw: str, expected: Decimal, base_jobline: dict
 ) -> None:
-    j = Jobline(**{**base_jobline, field: raw})
+    j = JobLine(**{**base_jobline, field: raw})
 
     assert getattr(j, field) == expected
 
@@ -86,7 +86,7 @@ def test_decimals_trimmed_and_parsed(
 def test_decimal_type_acceptances(
     field: str, raw: Any, expected: Decimal, base_jobline: dict
 ) -> None:
-    j = Jobline(**{**base_jobline, field: raw})
+    j = JobLine(**{**base_jobline, field: raw})
 
     assert getattr(j, field) == expected
 
@@ -95,14 +95,14 @@ def test_decimal_type_acceptances(
     "raw, expected", [("true", True), (False, False)], ids=["paid-string", "paid-bool"]
 )
 def test_paid_type_acceptance(raw: Any, expected: bool, base_jobline: dict) -> None:
-    j = Jobline(**{**base_jobline, "paid": raw})
+    j = JobLine(**{**base_jobline, "paid": raw})
 
     assert j.paid == expected
 
 
 @pytest.mark.parametrize("raw, expected", [(2, 2), (7, 7)], ids=["src-row-int1", "src-row-int2"])
 def test_source_row_type_acceptance(raw: int, expected: int, base_jobline: dict) -> None:
-    j = Jobline(**{**base_jobline, "source_row": raw})
+    j = JobLine(**{**base_jobline, "source_row": raw})
 
     assert j.source_row == expected
 
@@ -114,7 +114,7 @@ def test_source_row_type_acceptance(raw: int, expected: int, base_jobline: dict)
     ids=["capitalized-string", "all-capital-bool"],
 )
 def test_paid_capitalization_acceptance(raw: str, expected: bool, base_jobline: dict) -> None:
-    j = Jobline(**{**base_jobline, "paid": raw})
+    j = JobLine(**{**base_jobline, "paid": raw})
 
     assert j.paid == expected
 
@@ -130,7 +130,7 @@ def test_paid_capitalization_acceptance(raw: str, expected: bool, base_jobline: 
     ids=["total-under-five", "total-over-five", "total-five"],
 )
 def test_line_total_rounding(qty: str, rate: str, expected: Decimal, base_jobline: dict) -> None:
-    j = Jobline(**{**base_jobline, "qty": qty, "rate": rate})
+    j = JobLine(**{**base_jobline, "qty": qty, "rate": rate})
 
     assert j.line_total == expected
 
@@ -145,6 +145,6 @@ def test_line_total_rounding(qty: str, rate: str, expected: Decimal, base_joblin
 def test_decimal_symbol_parsing(
     field: str, raw: str, expected: Decimal, base_jobline: dict
 ) -> None:
-    j = Jobline(**{**base_jobline, field: raw})
+    j = JobLine(**{**base_jobline, field: raw})
 
     assert getattr(j, field) == expected

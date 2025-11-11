@@ -5,7 +5,7 @@ from typing import Any
 import pytest
 from pydantic import ValidationError
 
-from invoicegen.models import Jobline
+from invoicegen.models_jobline import JobLine
 
 
 # Create base jobline which will be modified in each case
@@ -41,7 +41,6 @@ def find_error(errors: list, field: str, err_msg: str) -> Any:
     for err in errors:
         loc = err.get("loc", ())
         if loc and loc[0] == field and err_msg in err["msg"]:
-            print(f"{err}")
             return err
     return None
 
@@ -54,7 +53,7 @@ def find_error(errors: list, field: str, err_msg: str) -> Any:
 @pytest.mark.parametrize("raw", [13, 12.23, Decimal(22.98)], ids=["int", "float", "decimal"])
 def test_not_str_when_expected(field: str, raw: Any, base_jobline: dict) -> None:
     with pytest.raises(ValidationError) as exc:
-        Jobline(**{**base_jobline, field: raw})
+        JobLine(**{**base_jobline, field: raw})
 
     err = find_error(exc.value.errors(), field, f"{field.capitalize()} must be a string")
     assert err
@@ -66,7 +65,7 @@ def test_not_str_when_expected(field: str, raw: Any, base_jobline: dict) -> None
 @pytest.mark.parametrize("raw", ["", "          \t\n"], ids=["empty", "whitespace"])
 def test_empty_str(field: str, raw: str, base_jobline: dict) -> None:
     with pytest.raises(ValidationError) as exc:
-        Jobline(**{**base_jobline, field: raw})
+        JobLine(**{**base_jobline, field: raw})
 
     err = find_error(exc.value.errors(), field, f"{field.capitalize()} is empty, expected a value")
     assert err
@@ -75,7 +74,7 @@ def test_empty_str(field: str, raw: str, base_jobline: dict) -> None:
 @pytest.mark.parametrize("raw", ["a" * 2001], ids=["2001-chars"])
 def test_description_max_chars(raw: str, base_jobline: dict) -> None:
     with pytest.raises(ValidationError) as exc:
-        Jobline(**{**base_jobline, "description": raw})
+        JobLine(**{**base_jobline, "description": raw})
 
     err = find_error(exc.value.errors(), "description", "Description is too long (max 2000 chars)")
     assert err
@@ -88,7 +87,7 @@ def test_description_max_chars(raw: str, base_jobline: dict) -> None:
 )
 def test_invalid_date_format(raw: str, base_jobline: dict) -> None:
     with pytest.raises(ValidationError) as exc:
-        Jobline(**{**base_jobline, "dates": raw})
+        JobLine(**{**base_jobline, "dates": raw})
 
     err = find_error(exc.value.errors(), "dates", "Invalid date format")
     assert err
@@ -104,7 +103,7 @@ def test_invalid_date_format(raw: str, base_jobline: dict) -> None:
 )
 def test_invalid_calendar_date(raw: str, base_jobline: dict) -> None:
     with pytest.raises(ValidationError) as exc:
-        Jobline(**{**base_jobline, "dates": raw})
+        JobLine(**{**base_jobline, "dates": raw})
 
     err = find_error(exc.value.errors(), "dates", " Invalid calendar date")
     assert err
@@ -114,7 +113,7 @@ def test_invalid_calendar_date(raw: str, base_jobline: dict) -> None:
 @pytest.mark.parametrize("raw", [float(12), 123.534], ids=["casted-float", "reg-float"])
 def test_floated_value_error(field: str, raw: float, base_jobline: dict) -> None:
     with pytest.raises(ValidationError) as exc:
-        Jobline(**{**base_jobline, field: raw})
+        JobLine(**{**base_jobline, field: raw})
 
     err = find_error(exc.value.errors(), field, "must not be a float")
     assert err
@@ -124,7 +123,7 @@ def test_floated_value_error(field: str, raw: float, base_jobline: dict) -> None
 @pytest.mark.parametrize("raw", [date(2025, 12, 12)], ids=["date"])
 def test_invalid_decimals_type(field: str, raw: Any, base_jobline: dict) -> None:
     with pytest.raises(ValidationError) as exc:
-        Jobline(**{**base_jobline, field: raw})
+        JobLine(**{**base_jobline, field: raw})
 
     err = find_error(exc.value.errors(), field, "must be a string, int, or decimal")
     assert err
@@ -134,7 +133,7 @@ def test_invalid_decimals_type(field: str, raw: Any, base_jobline: dict) -> None
 @pytest.mark.parametrize("raw", ["$$$", ",,,", ""], ids=["dollar-sign", "commas", "empty"])
 def test_decimals_empty_symbols(field: str, raw: str, base_jobline: dict) -> None:
     with pytest.raises(ValidationError) as exc:
-        Jobline(**{**base_jobline, field: raw})
+        JobLine(**{**base_jobline, field: raw})
 
     err = find_error(exc.value.errors(), field, "is empty after removing symbols; provide a number")
     assert err
@@ -144,7 +143,7 @@ def test_decimals_empty_symbols(field: str, raw: str, base_jobline: dict) -> Non
 @pytest.mark.parametrize("raw", ["$$asdk$", ".123"], ids=["letters", "no-digits"])
 def test_decimals_bad_format(field: str, raw: str, base_jobline: dict) -> None:
     with pytest.raises(ValidationError) as exc:
-        Jobline(**{**base_jobline, field: raw})
+        JobLine(**{**base_jobline, field: raw})
 
     err = find_error(exc.value.errors(), field, "must be digits.decimals")
     assert err
@@ -154,7 +153,7 @@ def test_decimals_bad_format(field: str, raw: str, base_jobline: dict) -> None:
 @pytest.mark.parametrize("raw", [Decimal("Infinity")], ids=["Infinity"])
 def test_decimals_not_finite(field: str, raw: Any, base_jobline: dict) -> None:
     with pytest.raises(ValidationError) as exc:
-        Jobline(**{**base_jobline, field: raw})
+        JobLine(**{**base_jobline, field: raw})
 
     err = find_error(exc.value.errors(), field, "must be a finite number")
     assert err
@@ -171,7 +170,7 @@ def test_decimals_not_finite(field: str, raw: Any, base_jobline: dict) -> None:
 )
 def test_decimals_negative(field: str, raw: Any, base_jobline: dict) -> None:
     with pytest.raises(ValidationError) as exc:
-        Jobline(**{**base_jobline, field: raw})
+        JobLine(**{**base_jobline, field: raw})
 
     err = find_error(exc.value.errors(), field, "must be at least 0")
     assert err
@@ -182,7 +181,7 @@ def test_decimals_negative(field: str, raw: Any, base_jobline: dict) -> None:
 )
 def test_paid_invalid_type(raw: Any, base_jobline: dict) -> None:
     with pytest.raises(ValidationError) as exc:
-        Jobline(**{**base_jobline, "paid": raw})
+        JobLine(**{**base_jobline, "paid": raw})
 
     err = find_error(exc.value.errors(), "paid", "Paid must be a string or boolean")
     assert err
@@ -193,7 +192,7 @@ def test_paid_invalid_type(raw: Any, base_jobline: dict) -> None:
 )
 def test_source_row_invalid_type(raw: Any, base_jobline: dict) -> None:
     with pytest.raises(ValidationError) as exc:
-        Jobline(**{**base_jobline, "source_row": raw})
+        JobLine(**{**base_jobline, "source_row": raw})
 
     err = find_error(exc.value.errors(), "source_row", "Source row must be an int")
     assert err
@@ -202,7 +201,7 @@ def test_source_row_invalid_type(raw: Any, base_jobline: dict) -> None:
 @pytest.mark.parametrize("raw", [1, -3], ids=["source_row-one", "source_row-negative"])
 def test_source_row_low(raw: int, base_jobline: dict) -> None:
     with pytest.raises(ValidationError) as exc:
-        Jobline(**{**base_jobline, "source_row": raw})
+        JobLine(**{**base_jobline, "source_row": raw})
 
     err = find_error(exc.value.errors(), "source_row", "Source row must be greater than 2")
     assert err

@@ -6,7 +6,7 @@ from typing import Any
 from pydantic import BaseModel, ValidationInfo, field_validator, model_validator
 
 
-class Jobline(BaseModel):
+class JobLine(BaseModel):
     address: str
     unit: str
     dates: date
@@ -18,7 +18,7 @@ class Jobline(BaseModel):
     source_row: int
 
     @field_validator("address", "unit", mode="before")
-    def ensure_nonempty_str(cls: Any, value: Any, info: ValidationInfo) -> str:
+    def ensure_nonempty_str(cls: Any, value: str, info: ValidationInfo) -> str:
         # Make sure it is a string
         if not isinstance(value, str):
             raise ValueError(
@@ -34,7 +34,7 @@ class Jobline(BaseModel):
         return str(value)
 
     @field_validator("description", mode="before")
-    def ensure_valid_decription(cls: Any, value: Any) -> str:
+    def ensure_valid_decription(cls: Any, value: str) -> str:
         # Make sure it is a string
         if not isinstance(value, str):
             raise ValueError(f"Description must be a string, got {type(value).__name__}")
@@ -132,7 +132,7 @@ class Jobline(BaseModel):
         raise ValueError("Paid must be a string or boolean True or False")
 
     @field_validator("source_row", mode="before")
-    def validate_row(cls: Any, value: Any) -> int:
+    def validate_row(cls: Any, value: int) -> int:
         if not isinstance(value, int):
             raise ValueError(
                 f"Source row must be an int, got {type(value).__name__}, how did this happen?"
