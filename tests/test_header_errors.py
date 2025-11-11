@@ -73,4 +73,4 @@ def test_no_errors(
     m = InvoiceMeta(**base_meta)
     header = InvoiceHeader(business=b, client=cli, meta=m)
 
-    assert header.meta.start_date == date(2025, 11, 10)
+    assert header.meta.start_date == date.today()
