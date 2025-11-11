@@ -67,7 +67,7 @@ def test_no_errors(
 ) -> None:
 
     a = Address(**base_address)
-    c = ContactInfo(**base_address)
+    c = ContactInfo(**base_contact_info)
     b = BusinessInfo(**{**base_business, "address": a, "contact": c})
     cli = ClientInfo(**{**base_client, "address": a, "contact": c})
     m = InvoiceMeta(**base_meta)

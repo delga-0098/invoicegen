@@ -167,7 +167,32 @@ class InvoiceMeta(BaseModel):
         return str(value)
 
     @field_validator("start_date", mode="before")
-    def validate_date(cls: Any, value: Any) -> date:
+    def validate_start_date(cls: Any, value: Any) -> date:
+        # Make sure it is a string
+        if not isinstance(value, str):
+            raise ValueError(
+                f"Start date must be a string in MM/DD/YYYY format, got {type(value).__name__}"
+            )
+
+        value = value.strip()
+
+        # Check expected fromat
+        if not re.fullmatch(r"\d{1,2}/\d{1,2}/\d{4}", value):
+            raise ValueError(f"Invalid date format '{value}' (expected MM/DD/YYYY)")
+
+        # Parse to real date object
+        try:
+            parsed = datetime.strptime(value, "%m/%d/%Y").date()
+        except ValueError:
+            raise ValueError(f"Invalid calendar date '{value}' (MM/DD/YYYY)") from None
+
+        return parsed
+    
+    @field_validator("due_date", mode="before")
+    def validate_due_date(cls: Any, value: Any) -> date:
+        if value == None:
+            return None
+        
         # Make sure it is a string
         if not isinstance(value, str):
             raise ValueError(
