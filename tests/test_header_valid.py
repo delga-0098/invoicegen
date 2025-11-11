@@ -1,5 +1,4 @@
-from datetime import date, timedelta
-from typing import Any
+from datetime import date
 
 import pytest
 
@@ -46,7 +45,13 @@ def base_client() -> dict:
 
 @pytest.fixture()
 def base_meta() -> dict:
-    return {"number": "INV-0001", "start_date": "12/01/2025", "due_date": "12/16/2025", "terms": "Net 30"}
+    return {
+        "number": "INV-0001",
+        "start_date": "12/01/2025",
+        "due_date": "12/16/2025",
+        "terms": "Net 30",
+    }
+
 
 def test_happy_path(
     base_address: dict,
@@ -85,11 +90,13 @@ def test_happy_path(
     assert header.meta == m
     assert header.client == cli
 
+
 def test_defaults(
     base_address: dict,
     base_business: dict,
     base_client: dict,
-    base_meta: dict,) -> None:
+    base_meta: dict,
+) -> None:
 
     del base_address["line2"]
     del base_business["logo"], base_business["license_number"], base_business["tax_id"]
@@ -103,16 +110,16 @@ def test_defaults(
     m = InvoiceMeta(**base_meta)
     header = InvoiceHeader(business=b, client=cli, meta=m)
 
-    assert a.line2 == None
+    assert a.line2 is None
     assert a.country == "US"
-    assert c.phone == None
-    assert c.email == None
-    assert c.website == None
-    assert b.logo == None
-    assert b.license_number == None
-    assert b.tax_id == None
-    assert cli.project_name == None
+    assert c.phone is None
+    assert c.email is None
+    assert c.website is None
+    assert b.logo is None
+    assert b.license_number is None
+    assert b.tax_id is None
+    assert cli.project_name is None
     # assert m.start_date == date.today()
     # assert m.due_date == date.today() + timedelta(days=0)
-    assert m.terms == None
+    assert m.terms is None
     assert header

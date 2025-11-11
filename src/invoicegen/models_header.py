@@ -187,12 +187,12 @@ class InvoiceMeta(BaseModel):
             raise ValueError(f"Invalid calendar date '{value}' (MM/DD/YYYY)") from None
 
         return parsed
-    
+
     @field_validator("due_date", mode="before")
-    def validate_due_date(cls: Any, value: Any) -> date:
-        if value == None:
+    def validate_due_date(cls: Any, value: Any) -> Any:
+        if value is None:
             return None
-        
+
         # Make sure it is a string
         if not isinstance(value, str):
             raise ValueError(
