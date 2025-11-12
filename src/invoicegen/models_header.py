@@ -4,6 +4,10 @@ from typing import Any
 
 from pydantic import BaseModel, ValidationInfo, field_validator, model_validator
 
+"""
+Need to create stronger validation for multiple fields, just checking for precense now.
+"""
+
 
 class Address(BaseModel):
     line1: str
@@ -46,8 +50,8 @@ class Address(BaseModel):
 
 
 class ContactInfo(BaseModel):
-    phone: str | None = None
-    email: str | None = None
+    phone: str | None = None  # TODO: Stronger validation
+    email: str | None = None  # TODO: Stronger validation
     website: str | None = None
 
     @field_validator("phone", "email", "website", mode="before")
@@ -148,7 +152,7 @@ class InvoiceMeta(BaseModel):
     number: str
     start_date: date = date.today()
     due_date: date | None = None
-    terms: str | None = None
+    terms: str | None = None  # TODO: Stronger validation
 
     @field_validator("number", mode="before")
     def ensure_nonempty_str(cls: Any, value: str, info: ValidationInfo) -> Any:
@@ -196,7 +200,7 @@ class InvoiceMeta(BaseModel):
         # Make sure it is a string
         if not isinstance(value, str):
             raise ValueError(
-                f"Start date must be a string in MM/DD/YYYY format, got {type(value).__name__}"
+                f"Due date must be a string in MM/DD/YYYY format, got {type(value).__name__}"
             )
 
         value = value.strip()
@@ -231,6 +235,8 @@ class InvoiceMeta(BaseModel):
     @model_validator(mode="after")
     def compute_due_date(self: Any) -> Any:
         if self.due_date is not None:
+            if self.due_date < self.start_date:
+                raise ValueError("Due date must be after start date.")
             return self
 
         # Set due date based on terms
