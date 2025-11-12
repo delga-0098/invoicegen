@@ -1,6 +1,6 @@
 import json
 
-from invoicegen.models_header import InvoiceHeader
+from invoicegen.models_invoice import Invoice
 
-schema = InvoiceHeader.model_json_schema()
+schema = Invoice.model_json_schema()
 print(json.dumps(schema, indent=2))
