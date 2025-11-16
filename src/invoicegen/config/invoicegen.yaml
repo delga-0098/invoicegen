@@ -1,0 +1,10 @@
+# Tax config
+tax_rate: 0.0725
+
+# Invoice numbering config
+invoice_pattern: ym_seq
+invoice_prefix: "INV-"
+sequence_start: 0001
+
+# Currency label config
+currency: "$"

@@ -5,7 +5,7 @@ from typing import Any
 import pytest
 from pydantic import ValidationError
 
-from invoicegen.models_jobline import JobLine
+from invoicegen.models import JobLine
 
 
 # Create base jobline which will be modified in each case
@@ -177,7 +177,9 @@ def test_decimals_negative(field: str, raw: Any, base_jobline: dict) -> None:
 
 
 @pytest.mark.parametrize(
-    "raw", [Decimal("8930"), 13, "fine"], ids=["paid-decimal", "paid-int", "paid-invalid-str"]
+    "raw",
+    [Decimal("8930"), 13, "fine"],
+    ids=["paid-decimal", "paid-int", "paid-invalid-str"],
 )
 def test_paid_invalid_type(raw: Any, base_jobline: dict) -> None:
     with pytest.raises(ValidationError) as exc:

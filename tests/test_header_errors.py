@@ -3,7 +3,7 @@ from typing import Any
 
 import pytest
 
-from invoicegen.models_header import (
+from invoicegen.models import (
     Address,
     BusinessInfo,
     ClientInfo,
@@ -26,7 +26,11 @@ def base_address() -> dict:
 
 @pytest.fixture()
 def base_contact_info() -> dict:
-    return {"phone": "1234567890", "email": "johndoe123@gmail.com", "website": "example.com"}
+    return {
+        "phone": "1234567890",
+        "email": "johndoe123@gmail.com",
+        "website": "example.com",
+    }
 
 
 @pytest.fixture()

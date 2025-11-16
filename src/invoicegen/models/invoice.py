@@ -5,8 +5,8 @@ from typing import Any
 
 from pydantic import BaseModel, ValidationInfo, field_validator, model_validator
 
-from invoicegen.models_header import InvoiceHeader
-from invoicegen.models_jobline import JobLine
+from .header import InvoiceHeader
+from .jobline import JobLine
 
 TWO = Decimal("0.01")
 
@@ -99,8 +99,8 @@ class Payment(BaseModel):
 class Invoice(BaseModel):
     header: InvoiceHeader
     lines: list[JobLine]
-    currency: str = "USD"
-    tax_rate: Decimal | None = None
+    currency: str = "USD$"
+    tax_rate: Decimal = Decimal("0")
     payments: list[Payment] | None = None
 
     # Computed values
@@ -124,13 +124,10 @@ class Invoice(BaseModel):
 
     @field_validator("tax_rate", mode="before")
     def verify_valid_tax_rate(cls: Any, value: Decimal) -> Any:
-        if value is None:
-            return None
-
         if not isinstance(value, Decimal):
             raise ValueError("Tax rate should be a decimal number between 0 and 100")
 
-        max_percent = 100
+        max_percent = Decimal("100")
         if not (0 <= value <= max_percent):
             raise ValueError("Tax rate should be between 0 and 100")
 

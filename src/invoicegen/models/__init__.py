@@ -1,17 +1,15 @@
-from .models import (
+from .header import (
     Address,
     BusinessInfo,
     ClientInfo,
     ContactInfo,
-    Invoice,
     InvoiceHeader,
     InvoiceMeta,
-    JobLine,
-    Payment,
 )
+from .invoice import Invoice, Payment
+from .jobline import JobLine
 
 __all__ = [
-    "__version__",
     "JobLine",
     "Invoice",
     "InvoiceHeader",
@@ -22,4 +20,3 @@ __all__ = [
     "InvoiceMeta",
     "ContactInfo",
 ]
-__version__ = "0.0.1"

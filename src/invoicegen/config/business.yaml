@@ -1,0 +1,18 @@
+name: "Forma Construction"
+
+logo: logo.jpg
+license_number: "CSLB #1234567"
+tax_id: "XX-XXXXXXX"
+
+address:
+  line1: "1234 main St."
+  line2: "Suite 200"
+  city: "Los Angeles"
+  state: "CA"
+  postal_code: "90001"
+
+contact:
+  email: "info@formaconstruction.com"
+  phone: "(123) 123-1234"
+  website: "https://formaconstruction.com"
+

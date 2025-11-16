@@ -4,7 +4,7 @@ from typing import Any
 
 import pytest
 
-from invoicegen.models_jobline import JobLine
+from invoicegen.models import JobLine
 
 
 # Create base jobline which will be modified in each case

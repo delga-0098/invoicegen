@@ -3,9 +3,16 @@ from typing import Any
 
 import pytest
 
-from invoicegen.models_header import Address, BusinessInfo, ClientInfo, InvoiceHeader, InvoiceMeta
-from invoicegen.models_invoice import Invoice, Payment
-from invoicegen.models_jobline import JobLine
+from invoicegen.models import (
+    Address,
+    BusinessInfo,
+    ClientInfo,
+    Invoice,
+    InvoiceHeader,
+    InvoiceMeta,
+    JobLine,
+    Payment,
+)
 
 
 @pytest.fixture()

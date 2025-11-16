@@ -150,7 +150,7 @@ class ClientInfo(BaseModel):
 
 class InvoiceMeta(BaseModel):
     number: str
-    start_date: date = date.today()
+    start_date: date | None = None
     due_date: date | None = None
     terms: str | None = None  # TODO: Stronger validation
 
@@ -172,6 +172,9 @@ class InvoiceMeta(BaseModel):
 
     @field_validator("start_date", mode="before")
     def validate_start_date(cls: Any, value: Any) -> date:
+        if value is None:
+            None
+
         # Make sure it is a string
         if not isinstance(value, str):
             raise ValueError(
@@ -234,6 +237,9 @@ class InvoiceMeta(BaseModel):
 
     @model_validator(mode="after")
     def compute_due_date(self: Any) -> Any:
+        if self.start_date is None:
+            self.start_date = date.today()
+        
         if self.due_date is not None:
             if self.due_date < self.start_date:
                 raise ValueError("Due date must be after start date.")
