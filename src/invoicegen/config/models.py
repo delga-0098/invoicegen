@@ -1,8 +1,8 @@
 from decimal import Decimal
-from typing import Literal
 from pathlib import Path
-import yaml
+from typing import Literal
 
+import yaml
 from pydantic import BaseModel, ConfigDict, Field
 
 from invoicegen.models.header import BusinessInfo
@@ -22,7 +22,9 @@ class InvoiceConfig(BaseModel):
         default="ym_seq", description="ym_unit_seq -> pre-YYYY-MM-UNIT-SEQ, etc."
     )
     invoice_prefix: str = Field(default="", description="Fixed prefix for invoice numbers.")
-    sequence_start: Decimal = Field(default=Decimal("1"), ge=0, description="Starting sequence number.")
+    sequence_start: Decimal = Field(
+        default=Decimal("1"), ge=0, description="Starting sequence number."
+    )
 
     # Currency label information
     currency: str = Field(
@@ -34,11 +36,9 @@ class InvoiceConfig(BaseModel):
 
     model_config = ConfigDict(extra="ignore")
 
+
 def load_config(config_dir: str | Path | None = None) -> InvoiceConfig:
-    if config_dir is None:
-        base_dir = Path(__file__).parent
-    else:
-        base_dir = Path(config_dir)
+    base_dir = Path(__file__).parent if config_dir is None else Path(__file__).parent
 
     with (base_dir / "invoicegen.yaml").open("r", encoding="utf-8") as f:
         raw_cfg = yaml.safe_load(f) or {}

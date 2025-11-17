@@ -65,4 +65,5 @@ dev = [
   "ruff",
   "mypy",
   "pytest>=8",
+  "types-PyYaml",
 ]
